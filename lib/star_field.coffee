@@ -1,6 +1,9 @@
 class @StarField
+  @constructor: ->
+    console.log "static constructor in: "+@name
+
   @field: (options) ->
-    console.log "Now in field"
+    console.log "Now in field name:" + @name
 
 class @Text extends StarField
 
