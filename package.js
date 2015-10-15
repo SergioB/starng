@@ -23,6 +23,8 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('tinytest');
+  api.use('coffeescript');
   api.use('netforza:starng');
   api.addFiles('starng-tests.js');
+  api.addFiles('test/star_record_test.coffee');
 });
