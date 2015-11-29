@@ -11,14 +11,18 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.1.0.2');
+  api.versionsFrom('1.2.1');
 
   api.use('templating');
   api.use('coffeescript');
+  api.use('react');
+  api.use('ccorcos:cjsx');
   api.addFiles('lib/star_record.coffee');
   api.addFiles('lib/star_field.coffee');
   api.addFiles('client/create.html', 'client');
   api.addFiles('client/create.coffee', 'client');
+  api.addFiles('client/edit_object.cjsx', 'client');
+  api.addFiles('client/new_object.cjsx', 'client');
 });
 
 Package.onTest(function(api) {
