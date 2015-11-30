@@ -1,4 +1,4 @@
-@NewObject = React.createClass
+class @NewObject extends React.Component
 
     mixins: [ReactMeteorData],
 
@@ -15,5 +15,5 @@
         console.log("instance: ["+inst1+"]")
         inst1.listFields()
         <div className="container">
-            The 3 proposed type: {this.props.type.name} and test1: {inst1.test1}
+            The 4 proposed type: {this.props.type.name} and test1: {inst1.test1}
         </div>

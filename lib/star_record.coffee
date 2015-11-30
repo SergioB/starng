@@ -4,16 +4,18 @@ class @StarRecord
     @test1 = "aaa bbb"
     @processFields()
 
-  ## Creates a new instance of the Model
-  @create: ->
-    object = new this
-    for key, value of object
-      if isField value
-        field = new value
+  processFields: ->
+    for key, value of this
+      console.log("For key: #{key} isField is: #{@isField(value)}")
+      if @isField(value)
+        field = new value.type(value.options)
         this[key] = field
 
-  @isField: (field)->
-    if field.isField? true else false
+  isField: (field)->
+    if field.isStarField?
+      true
+    else
+      false
 
 
   @listFields: ->
