@@ -1,5 +1,10 @@
 class @NewObject extends React.Component
 
+    constructor: (props) ->
+        super props
+        @state =
+            instance: new this.props.type()     # note that this object must not reactivelly change
+
     mixins: [ReactMeteorData],
 
     getMeteorData: ->
@@ -7,13 +12,25 @@ class @NewObject extends React.Component
             currentUser: "None1"
         }
 
+    renderFields: ->
+        fields = []
+        i = 0
+        for field in @state.instance.fields
+          fields.push field.renderEditor(i++)
+
+        fields
+
 
     render: ->
         console.log("In render of EditObject, type: ["+this.props.type+"]")
-        this.props.type.listFields()
-        inst1 = new this.props.type()
-        console.log("instance: ["+inst1+"]")
-        inst1.listFields()
+        console.log("instance: ["+@state.instance+"]")
         <div className="container">
-            The 4 proposed type: {this.props.type.name} and test1: {inst1.test1}
+            The proposed type: {this.props.type.name} render fields:
+            <form className="form-horizontal" role="form">
+              {@renderFields()}
+              <SubmitButton />
+            </form>
         </div>
+
+
+

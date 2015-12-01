@@ -22,6 +22,9 @@ Package.onUse(function(api) {
   api.addFiles('client/create.html', 'client');
   api.addFiles('client/create.coffee', 'client');
   api.addFiles('client/edit_object.cjsx', 'client');
+  api.addFiles('client/view/text_field.cjsx', 'client');
+  api.addFiles('client/view/label.cjsx', 'client');
+  api.addFiles('client/view/elements.cjsx', 'client');
   api.addFiles('client/new_object.cjsx', 'client');
 });
 

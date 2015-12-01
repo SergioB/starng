@@ -5,11 +5,13 @@ class @StarRecord
     @processFields()
 
   processFields: ->
+    @fields = []
     for key, value of this
-      console.log("For key: #{key} isField is: #{@isField(value)}")
       if @isField(value)
+        value.options.key = key
         field = new value.type(value.options)
         this[key] = field
+        @fields.push field
 
   isField: (field)->
     if field.isStarField?

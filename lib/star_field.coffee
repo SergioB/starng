@@ -1,29 +1,35 @@
 class @StarField
 
-  @constructor: ->
+  @constructor: (options)->
     console.log "static constructor in: "+@name
-    @processFields()
+
+  constructor: (options) ->
+    @key = options.key
 
   @field: (options) ->
     console.log "Now in field name:" + @name
-#    console.log "Instance of StarField: " +(this instanceof StarField)
-#    console.log "Instance of text: " +(this instanceof Text)
-#    console.log "..."
     {
       isStarField: true
       type: this
       options: options
     }
 
-  ##
-  processFields: ->
-    for key, value of this
-      console.log("For key: #{key} isField is: #{@isField(value)}")
-      if @isField(value)
-        field = new value.type(value.options)
-        this[key] = field
+  getLabel: ->
+    @key    #todo: to check for the provided label option
+
+  renderEditor: (key)->
+    React.createElement(Label, {content: "This is default editor which should be overriden", key:key})
+
+  renderLabel: (key)->
+    React.createElement(Label, {content: "#{@key}: ", key:key})
 
 class @Text extends StarField
+  # overriding the default editor
+  renderEditor: (key)->
+    console.log "Returning text editor"
+    React.createElement(TextEditor, {name: @key, label: @getLabel(), key:key} )
+
+
 
 
 class @ManyToOne extends StarField
