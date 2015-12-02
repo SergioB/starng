@@ -20,13 +20,16 @@ class @NewObject extends React.Component
 
         fields
 
+    handleSubmit: (e)->
+        e.preventDefault()
+        console.log "form submitted "+e
 
     render: ->
         console.log("In render of EditObject, type: ["+this.props.type+"]")
         console.log("instance: ["+@state.instance+"]")
         <div className="container">
-            The proposed type: {this.props.type.name} render fields:
-            <form className="form-horizontal" role="form">
+            The 2 proposed type: {this.props.type.name} render fields:
+            <form className="form-horizontal" role="form" onSubmit=@handleSubmit >
               {@renderFields()}
               <SubmitButton />
             </form>

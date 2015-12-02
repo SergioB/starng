@@ -5,6 +5,7 @@ class @StarField
 
   constructor: (options) ->
     @key = options.key
+    @label = options.label
 
   @field: (options) ->
     console.log "Now in field name:" + @name
@@ -15,7 +16,10 @@ class @StarField
     }
 
   getLabel: ->
-    @key    #todo: to check for the provided label option
+    if @label
+      @label
+    else
+      @key
 
   renderEditor: (key)->
     React.createElement(Label, {content: "This is default editor which should be overriden", key:key})
@@ -28,6 +32,8 @@ class @Text extends StarField
   renderEditor: (key)->
     console.log "Returning text editor"
     React.createElement(TextEditor, {name: @key, label: @getLabel(), key:key} )
+
+
 
 
 
