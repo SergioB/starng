@@ -31,3 +31,17 @@ class @StarRecord
       console.log("this[#{key}] = #{value}")
       isStarRecord = value instanceof StarRecord
       console.log("is StarRecord: [#{isStarRecord}]")
+
+  debugInfo: ->
+    console.log " class name: #{@constructor.name}"
+    for field in @fields
+      console.log "#{field.key}:#{field.value}"
+
+  validate: ->
+    foundErrors = false
+    for field in @fields
+      validationResult =
+      if field.runValidation()
+        foundErrors = true
+
+    foundErrors
