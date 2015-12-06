@@ -30,10 +30,9 @@ class @NewObject extends React.Component
                 hasErrors: true
 
     render: ->
-        console.log("In render of EditObject, type: ["+this.props.type+"]")
+        console.log("In render of NewObject, name:#{this.props.type.name}")
         console.log("instance: ["+@state.instance+"]")
         <div className="container">
-            The 4 proposed type: {this.props.type.name} render fields:
             <form className="form-horizontal" role="form" onSubmit=@handleSubmit >
               {@renderFields()}
               <SubmitButton />
