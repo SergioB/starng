@@ -3,6 +3,7 @@ class @TextEditor extends React.Component
   constructor: (props)->
     super(props)
     value = @props.value ? ""
+    @fieldType = "text" # it is overriden by PasswordEditor
     @state =
       value: value
 
@@ -21,6 +22,6 @@ class @TextEditor extends React.Component
 
     <div className= {commonClass}>
       <label className="control-label" htmlFor={@props.name} >{@props.label}:</label>
-      <input className="form-control" type="text" name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
       {errorMessage}
     </div>

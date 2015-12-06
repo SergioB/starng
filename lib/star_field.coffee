@@ -72,7 +72,8 @@ class @Text extends StarField
 
   constructor: (options) ->
     super(options)
-#    @max = options.max
+    @editor = TextEditor
+
     @min = options.min
     if @min? then @addValidator Validators.minString(@min)
 
@@ -82,7 +83,7 @@ class @Text extends StarField
   # overriding the default editor
   renderEditor: (reactKey)->
     console.log "Generating TextEditor hasErrors: #{@hasErrors}"
-    React.createElement TextEditor,
+    React.createElement @editor,
       name: @key
       label: @getLabel()
       key: reactKey
@@ -98,3 +99,9 @@ class @Text extends StarField
 class @ManyToOne extends StarField
   to: (className) ->
     console.log("ManyToOne to:"+className)
+
+
+class @Password extends Text
+  constructor: (options) ->
+    super(options)
+    @editor = PasswordEditor

@@ -25,6 +25,7 @@ Package.onUse(function(api) {
   api.addFiles('client/create.coffee', 'client');
   api.addFiles('client/edit_object.cjsx', 'client');
   api.addFiles('client/view/text_editor.cjsx', 'client');
+  api.addFiles('client/view/password.cjsx', 'client');
   api.addFiles('client/view/label.cjsx', 'client');
   api.addFiles('client/view/elements.cjsx', 'client');
   api.addFiles('client/new_object.cjsx', 'client');
