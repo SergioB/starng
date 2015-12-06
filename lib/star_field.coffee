@@ -44,7 +44,8 @@ class @StarField
     @value == ""
 
   runValidation: ->
-    console.log "In run validation..."
+    @hasErrors = false
+    console.log "In run validation... value = #{@value}"
     if not @optional and @isEmpty()
       @errorMessage = "#{@getLabel()} must not be empty"
       @hasErrors = true  # also returns true meaning that there are errors in this validation
@@ -82,7 +83,7 @@ class @Text extends StarField
 
   # overriding the default editor
   renderEditor: (reactKey)->
-    console.log "Generating TextEditor hasErrors: #{@hasErrors}"
+    console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
     React.createElement @editor,
       name: @key
       label: @getLabel()
@@ -105,3 +106,9 @@ class @Password extends Text
   constructor: (options) ->
     super(options)
     @editor = PasswordEditor
+
+
+class @Email extends Text
+  constructor: (options) ->
+    super(options)
+    @addValidator Validators.email()

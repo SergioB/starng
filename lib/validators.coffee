@@ -32,3 +32,14 @@ class @Validators
         hasErrors: false
 
 
+
+  @email: ()->
+    emailPattern = /// ^   # begin of line
+            ([\w.-]+)        # one or more letters, numbers, _ . or -
+            @                # followed by @ char
+            ([\w.-]+)        # then one or more letters, numbers, _ . or -
+            \.               # followed by a period
+            ([a-zA-Z.]{2,6}) # followed by 2 to 6 letters or priods
+            $ ///i           # end of line and ignore case
+    @createValidator "Invalid e-mail address", (value)->
+      not value.match emailPattern
