@@ -21,9 +21,9 @@ class @StarRecord
 
 
   fieldsFor: (formName) ->
-    console.log "Form name: #{formName}  fields: #{@forms[formName].fields}"
+    console.log "Form name: #{formName} "
     if formName == 'default'
-      if not @forms[formName]?
+      if not @forms? or not @forms[formName]?
         console.log "For #{formName} Returning fields: #{@fields}"
         return @fields
 
