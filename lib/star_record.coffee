@@ -20,6 +20,18 @@ class @StarRecord
       false
 
 
+  fieldsFor: (formName) ->
+    console.log "Form name: #{formName}  fields: #{@forms[formName].fields}"
+    if formName == 'default'
+      if not @forms[formName]?
+        console.log "For #{formName} Returning fields: #{@fields}"
+        return @fields
+
+    (@getField fieldName for fieldName in @forms[formName].fields)
+
+  getField: (fieldName)->
+    if this[fieldName]? then this[fieldName] else throw "No field with name: #{fieldName}"
+
   @listFields: ->
     console.log(" in class: ");
     for key, value of this
@@ -45,3 +57,4 @@ class @StarRecord
         foundErrors = true
 
     foundErrors
+

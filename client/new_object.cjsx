@@ -1,4 +1,6 @@
 class @NewObject extends React.Component
+    @defaultProps:
+        form: 'default'
 
     constructor: (props) ->
         super props
@@ -15,10 +17,18 @@ class @NewObject extends React.Component
     renderFields: ->
         fields = []
         i = 0
-        for field in @state.instance.fields
+        for field in @state.instance.fieldsFor @props.form
           fields.push field.renderEditor(i++)
 
         fields
+
+    afterSave: (errors, object)=>
+        if errors
+            #todo: print error in form
+        else
+            Accounts.create object.email.value, object.password.value
+
+
 
     handleSubmit: (e)=>
         e.preventDefault()
@@ -28,6 +38,8 @@ class @NewObject extends React.Component
             console.log "Validation results has errors"
             @setState
                 hasErrors: true
+        else
+            @state.instance.save(afterSave)
 
     render: ->
         console.log("In render of NewObject, name:#{this.props.type.name}")
