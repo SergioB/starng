@@ -22,11 +22,12 @@ class @NewObject extends React.Component
 
         fields
 
-    afterSave: (errors, object)=>
+    afterSave: (errors)=>
+        console.log "in afterSave userID: "+ Meteor.userId
         if errors
             #todo: print error in form
-        else
-            Accounts.create object.email.value, object.password.value
+            console.log "in afterSave errors received"
+
 
 
 

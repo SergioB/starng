@@ -2,6 +2,9 @@ class @StarRecord
   isNew: true
   #_id: is defined only on load and after insert otherwise it's undefined
 
+  hasError: false
+  errorMessage: ""
+
   constructor: ->
     @test1 = "aaa bbb"
     @processFields()
@@ -83,27 +86,43 @@ class @StarRecord
   afterSave: ->
 
 
+  _afterSave: ->
+    @afterSave()    # invoke possible hook
+    @invokeSaveCallback() # invoke callback
+
+
   # internal function called after update
   _afterUpdate: (error, response) =>
     if error
       # todo:  to handle error
     else
       # todo: to handle normal functionality
-      @afterSave()
+    @_afterSave()
 
   # internal function called after insert
   _afterInsert: (error, newId) =>
     if error
       # todo:  to handle error
+      @hasError = true
+      @errorMessage = error
     else
       console.log "in _afterInsert, newId = #{newId}"
       @_id = newId
       @isNew = false
-      @afterSave()
+    @_afterSave()
 
+  # implementation of suppresseable callback, used for cases when afterSave hook need to wait for
+  # other callbacks before invoking save callback, in this case it will suppress the callback and will invoke it later
+  saveCallbackSuppressed: false
+  invokeSaveCallback: ->
+    if not @saveCallbackSuppressed and @saveCallback?
+      @saveCallback()
+
+  saveCallback: ->
 
   save: (saveCallback)->
     console.log '############## save $$$$$$$$$$$$'
+    @saveCallback = saveCallback
     @beforeSave()    # calling before save hook, which can be redefined later
     if @isNew
       Meteor.call("starInsert", @constructor.name, @computeValues(), @_afterInsert)
