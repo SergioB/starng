@@ -15,6 +15,7 @@ class @StarField
 
     @validators = []
     @addValidators(options.validators)
+    @transient = options.transient ? false
 
     # adding the single validator in options, is used for added simplicity of defining only one validator
     if options.validator? then @addValidator options.validator, @getLabel()
@@ -36,6 +37,7 @@ class @StarField
       options: options
     }
 
+  # if label is defined returns label otherwise the key
   getLabel: ->
     @label ? @key
 

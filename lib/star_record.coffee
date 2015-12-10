@@ -1,4 +1,6 @@
 class @StarRecord
+  isNew: true
+  #_id: is defined only on load and after insert otherwise it's undefined
 
   constructor: ->
     @test1 = "aaa bbb"
@@ -30,7 +32,7 @@ class @StarRecord
     (@getField fieldName for fieldName in @forms[formName].fields)
 
   getField: (fieldName)->
-    if this[fieldName]? then this[fieldName] else throw "No field with name: #{fieldName}"
+    if this[fieldName]? then this[fieldName] else throw "In #{@constructor.name} there is no field with name: #{fieldName}"
 
   @listFields: ->
     console.log(" in class: ");
@@ -49,12 +51,62 @@ class @StarRecord
     for field in @fields
       console.log "#{field.key}:#{field.value}"
 
+  # WARNING! it will validate only the fields from form, entire object will remain unvalidated
+  validateForm: (formName)->
+    @validateFields @fieldsFor(formName)
+
   validate: ->
+    @validateFields @fields
+
+  validateFields: (fieldsToValidate)->
     foundErrors = false
-    for field in @fields
+    for field in fieldsToValidate
       validationResult =
       if field.runValidation()
         foundErrors = true
 
     foundErrors
+
+  # returns a object with  a structure {fieldName: value }
+  # should return only non transient fields
+  computeValues: ->
+    objectValues = {}
+    for field in @fields
+      if not field.transient
+        objectValues[field.key] = field.value
+    objectValues
+
+
+
+  # hook functions:
+  beforeSave: ->
+  afterSave: ->
+
+
+  # internal function called after update
+  _afterUpdate: (error, response) =>
+    if error
+      # todo:  to handle error
+    else
+      # todo: to handle normal functionality
+      @afterSave()
+
+  # internal function called after insert
+  _afterInsert: (error, newId) =>
+    if error
+      # todo:  to handle error
+    else
+      console.log "in _afterInsert, newId = #{newId}"
+      @_id = newId
+      @isNew = false
+      @afterSave()
+
+
+  save: (saveCallback)->
+    console.log '############## save $$$$$$$$$$$$'
+    @beforeSave()    # calling before save hook, which can be redefined later
+    if @isNew
+      Meteor.call("starInsert", @constructor.name, @computeValues(), @_afterInsert)
+    else
+      Meteor.call("starUpdate", @constructor.name, @_id, @computeValues(), @_afterUpdate)
 

@@ -32,14 +32,14 @@ class @NewObject extends React.Component
 
     handleSubmit: (e)=>
         e.preventDefault()
-        console.log "form submitted "+e + " stat: "+@state
+        console.log "form submitted #{e} stat: #{@state}"
         @state.instance.debugInfo()
-        if @state.instance.validate()   # returns true if there are validation errors
+        if @state.instance.validateForm @props.form # returns true if there are validation errors
             console.log "Validation results has errors"
             @setState
                 hasErrors: true
         else
-            @state.instance.save(afterSave)
+            @state.instance.save(@afterSave)
 
     render: ->
         console.log("In render of NewObject, name:#{this.props.type.name}")
