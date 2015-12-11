@@ -5,7 +5,7 @@ class @NewObject extends React.Component
     constructor: (props) ->
         super props
         @state =
-            instance: new this.props.type()     # note that this object must not reactivelly change
+            instance: new this.props.type()
 
     mixins: [ReactMeteorData],
 
@@ -22,11 +22,13 @@ class @NewObject extends React.Component
 
         fields
 
-    afterSave: (errors, object)=>
+    afterSave: (errors)=>
+        console.log "in afterSave "
         if errors
             #todo: print error in form
+            console.log "in afterSave errors received"
         else
-            Accounts.create object.email.value, object.password.value
+            @props.onSave @state.instance
 
 
 
