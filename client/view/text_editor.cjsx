@@ -13,6 +13,12 @@ class @TextEditor extends React.Component
       value: newValue
     @props.handleChange newValue
 
+  inputElement: ->
+    if @props.height && @props.height > 1
+      <textarea className="form-control" rows={@props.height} type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+    else
+      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+
   render: ->
     commonClass = "form-group"
     commonClass += if @props.hasErrors then " has-error" else ""
@@ -22,6 +28,6 @@ class @TextEditor extends React.Component
 
     <div className= {commonClass}>
       <label className="control-label" htmlFor={@props.name} >{@props.label}:</label>
-      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+      {@inputElement()}
       {errorMessage}
     </div>

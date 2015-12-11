@@ -82,6 +82,7 @@ class @Text extends StarField
 
     @max = options.max
     if @max? then @addValidator Validators.maxString(@max)
+    @height = options.height
 
   # overriding the default editor
   renderEditor: (reactKey)->
@@ -92,6 +93,7 @@ class @Text extends StarField
       key: reactKey
       value: @value
       handleChange: @onChange
+      height: @height
       hasErrors: @hasErrors
       errorMessage: @errorMessage
 
