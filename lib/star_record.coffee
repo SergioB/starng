@@ -1,3 +1,22 @@
+# Note StarClasses should be defined in the same file as the StarRecord before its definition (possible will change in 1.3 with modules)
+class @StarClasses
+  @classes = {}
+
+  # return the class with @name
+  @get: (name)->
+    console.log "getting star class #{name}"
+    if not @classes[name]?
+      console.log " Can't find class with name: #{name}"
+      throw " Can't find class with name: #{name}"
+    @classes[name]
+
+
+# add the class with @name
+  @add: (name, classObject)->
+    console.log "adding star class #{name} "
+    @classes[name] = classObject
+
+
 class @StarRecord
   isNew: true
   #_id: is defined only on load and after insert otherwise it's undefined
@@ -6,6 +25,12 @@ class @StarRecord
   errorMessage: ""
   @collection: ->
     Collections.get @name
+
+  @init: ->
+    console.log "In static init of #{@name}"
+    StarClasses.add @name, this
+
+  @constructor: ->
 
   constructor: ->
     @test1 = "aaa bbb"
@@ -77,10 +102,15 @@ class @StarRecord
   computeValues: ->
     objectValues = {}
     for field in @fields
-      if not field.transient
+      if (not field.transient) && not (field.serverOnly  && Meteor.isClient)
         objectValues[field.key] = field.value
     objectValues
 
+  setValues: (values)->
+    console.log " in set values: #{values}"
+    for key, value of values
+      console.log " setting this[#{key}]=#{value}"
+      this[key].set value
 
 
   # hook functions:
@@ -126,7 +156,6 @@ class @StarRecord
   saveCallback: ->
 
   save: (saveCallback)->
-    console.log '############## save $$$$$$$$$$$$'
     @saveCallback = saveCallback
     @beforeSave()    # calling before save hook, which can be redefined later
     if @isNew

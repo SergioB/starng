@@ -16,6 +16,7 @@ class @StarField
     @validators = []
     @addValidators(options.validators)
     @transient = options.transient ? false
+    @serverOnly = options.serverOnly ? false
 
     # adding the single validator in options, is used for added simplicity of defining only one validator
     if options.validator? then @addValidator options.validator, @getLabel()
@@ -41,6 +42,9 @@ class @StarField
   getLabel: ->
     @label ? @key
 
+  set: (newValue)->
+    @value = newValue
+
 
   isEmpty: ->
     @value == ""
@@ -61,12 +65,11 @@ class @StarField
                         # in future possible we'll be able to have multiple errrors per field
       return false
 
-
-
-
+  editor: ->
+    Label
 
   renderEditor: (key)->
-    React.createElement(Label, {content: "This is default editor which should be overriden", key:key})
+    React.createElement(@editor(), {content: "This is default editor which should be overriden", key:key})
 
   renderLabel: (key)->
     React.createElement(Label, {content: "#{@key}: ", key:key})
@@ -75,7 +78,6 @@ class @Text extends StarField
 
   constructor: (options) ->
     super(options)
-    @editor = TextEditor
 
     @min = options.min
     if @min? then @addValidator Validators.minString(@min)
@@ -84,10 +86,13 @@ class @Text extends StarField
     if @max? then @addValidator Validators.maxString(@max)
     @height = options.height
 
+  editor: ->
+    TextEditor
+
   # overriding the default editor
   renderEditor: (reactKey)->
     console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
-    React.createElement @editor,
+    React.createElement @editor(),
       name: @key
       label: @getLabel()
       key: reactKey
@@ -109,7 +114,10 @@ class @ManyToOne extends StarField
 class @Password extends Text
   constructor: (options) ->
     super(options)
-    @editor = PasswordEditor
+
+
+  editor: ->
+    PasswordEditor
 
 
 class @Email extends Text
