@@ -46,12 +46,10 @@ class @NewObject extends React.Component
     render: ->
         console.log("In render of NewObject, name:#{this.props.type.name}")
         console.log("instance: ["+@state.instance+"]")
-        <div className="container">
-            <form className="form-horizontal" role="form" onSubmit=@handleSubmit >
-              {@renderFields()}
-              <SubmitButton />
-            </form>
-        </div>
+        <form role="form" onSubmit=@handleSubmit >
+            {@renderFields()}
+            <SubmitButton />
+        </form>
 
 
 

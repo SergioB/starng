@@ -1,4 +1,3 @@
-class CollectionManager
 
 class @Collections
   @collections = {}
