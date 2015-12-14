@@ -4,6 +4,8 @@ class @StarRecord
 
   hasError: false
   errorMessage: ""
+  @collection: ->
+    Collections.get @name
 
   constructor: ->
     @test1 = "aaa bbb"
@@ -84,6 +86,9 @@ class @StarRecord
   # hook functions:
   beforeSave: ->
   afterSave: ->
+
+  onServerSave: (userId)->
+
 
 
   _afterSave: ->
