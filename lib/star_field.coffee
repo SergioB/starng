@@ -40,7 +40,7 @@ class @StarField
 
   # if label is defined returns label otherwise the key
   getLabel: ->
-    @label ? @key
+    @label ? capitalize(@key)
 
   set: (newValue)->
     @value = newValue

@@ -24,11 +24,11 @@ class @StarRecord
   hasError: false
   errorMessage: ""
   @collection: ->
-    Collections.get @name
+    Collections.get @getName()
 
   @init: ->
     console.log "In static init of #{@name}"
-    StarClasses.add @name, this
+    StarClasses.add @getName(), this
 
   @constructor: ->
 
@@ -52,6 +52,13 @@ class @StarRecord
       false
 
 
+  @getName: ->
+    @constructor.name
+
+  getName: ->
+    @constructor.getName()
+
+
   fieldsFor: (formName) ->
     console.log "Form name: #{formName} "
     if formName == 'default'
@@ -62,7 +69,7 @@ class @StarRecord
     (@getField fieldName for fieldName in @forms[formName].fields)
 
   getField: (fieldName)->
-    if this[fieldName]? then this[fieldName] else throw "In #{@constructor.name} there is no field with name: #{fieldName}"
+    if this[fieldName]? then this[fieldName] else throw "In #{@getName()} there is no field with name: #{fieldName}"
 
   @listFields: ->
     console.log(" in class: ");
@@ -77,7 +84,7 @@ class @StarRecord
       console.log("is StarRecord: [#{isStarRecord}]")
 
   debugInfo: ->
-    console.log " class name: #{@constructor.name}"
+    console.log " class name: #{@getName()}"
     for field in @fields
       console.log "#{field.key}:#{field.value}"
 
@@ -159,7 +166,7 @@ class @StarRecord
     @saveCallback = saveCallback
     @beforeSave()    # calling before save hook, which can be redefined later
     if @isNew
-      Meteor.call("starInsert", @constructor.name, @computeValues(), @_afterInsert)
+      Meteor.call("starInsert", @getName(), @computeValues(), @_afterInsert)
     else
-      Meteor.call("starUpdate", @constructor.name, @_id, @computeValues(), @_afterUpdate)
+      Meteor.call("starUpdate", @getName(), @_id, @computeValues(), @_afterUpdate)
 

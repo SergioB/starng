@@ -7,13 +7,6 @@ class @NewObject extends React.Component
         @state =
             instance: new this.props.type()
 
-    mixins: [ReactMeteorData],
-
-    getMeteorData: ->
-        {
-            currentUser: "None1"
-        }
-
     renderFields: ->
         fields = []
         i = 0
