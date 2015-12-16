@@ -1,15 +1,12 @@
-@EditObject = React.createClass
+class @EditObject extends NewObject
+    constructor: (props) ->
+        super props
+        @state.instance.load(@props._id, @onLoad)
 
-    mixins: [ReactMeteorData],
-
-    getMeteorData: ->
-        {
-            currentUser: "None1"
-        }
-
-
-    render: ->
-        console.log("In render of EditObject")
-        <div className="container">
-            It works OOE
-        </div>
+    onLoad: (error)=>
+        console.log "in onLoad error:#{error}"
+        if error
+            console.log " error: #{error}"
+            # todo: handle error
+        @setState
+            hasErrors: false

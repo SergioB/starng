@@ -3,9 +3,18 @@ class @TextEditor extends React.Component
   constructor: (props)->
     super(props)
     value = @props.value ? ""
+    console.log "TextEditor created with value: #{value}"
     @fieldType = "text" # it is overriden by PasswordEditor
     @state =
       value: value
+
+    # now subscribe this component to model change value
+    @props.modelChangeSubscribe @updateValue
+
+  updateValue: (newValue)=>
+    console.log "In TextEditor.updateValue #{@props.label} newValue: #{newValue}"
+    @setState
+      value: newValue
 
   handleChange: (e)=>
     newValue = e.target.value

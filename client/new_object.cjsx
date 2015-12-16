@@ -43,6 +43,3 @@ class @NewObject extends React.Component
             {@renderFields()}
             <SubmitButton />
         </form>
-
-
-

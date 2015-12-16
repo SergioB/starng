@@ -19,18 +19,18 @@ Package.onUse(function(api) {
   api.use('react');
   api.use('ccorcos:cjsx');
   api.addFiles('lib/collections.coffee');
-  api.addFiles('lib/star_record.coffee');
   api.addFiles('lib/star_field.coffee');
+  api.addFiles('lib/star_record.coffee');
   api.addFiles('lib/utils.coffee');
   api.addFiles('lib/validators.coffee');
   api.addFiles('client/create.html', 'client');
   api.addFiles('client/create.coffee', 'client');
-  api.addFiles('client/edit_object.cjsx', 'client');
   api.addFiles('client/view/text_editor.cjsx', 'client');
   api.addFiles('client/view/password.cjsx', 'client');
   api.addFiles('client/view/label.cjsx', 'client');
   api.addFiles('client/view/elements.cjsx', 'client');
   api.addFiles('client/new_object.cjsx', 'client');
+  api.addFiles('client/edit_object.cjsx', 'client');
   api.addFiles('server/methods.coffee', 'server');
 });
 

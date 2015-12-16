@@ -10,6 +10,11 @@ class @StarClasses
       throw " Can't find class with name: #{name}"
     @classes[name]
 
+  @new: (name)->
+    classObject = @get name
+    new classObject()
+
+
 
 # add the class with @name
   @add: (name, classObject)->
@@ -33,8 +38,10 @@ class @StarRecord
   @constructor: ->
 
   constructor: ->
-    @test1 = "aaa bbb"
     @processFields()
+
+  _id: StarField.field # definition of _id field common in all Meteor collections
+    transient: true
 
   processFields: ->
     @fields = []
@@ -135,6 +142,7 @@ class @StarRecord
 
   # internal function called after update
   _afterUpdate: (error, response) =>
+    console.log "In _afterUpdate error:#{error} response:#{response}"
     if error
       # todo:  to handle error
     else
@@ -149,7 +157,7 @@ class @StarRecord
       @errorMessage = error
     else
       console.log "in _afterInsert, newId = #{newId}"
-      @_id = newId
+      @_id.set newId
       @isNew = false
     @_afterSave()
 
@@ -168,5 +176,24 @@ class @StarRecord
     if @isNew
       Meteor.call("starInsert", @getName(), @computeValues(), @_afterInsert)
     else
-      Meteor.call("starUpdate", @getName(), @_id, @computeValues(), @_afterUpdate)
+      Meteor.call("starUpdate", @getName(), @_id.value, @computeValues(), @_afterUpdate)
 
+  _loadCallback: (error, result)=>
+    console.log "in loadCallback, error: #{error}, result: #{result}"
+
+  _onResultLoadCallback: (error, result)=>
+    console.log "in _onResultLoadCallback, error: #{error}, result: #{result} title:#{result.title}"
+    @setValues result
+    @isNew = false
+    if @onLoadCallback?
+      @onLoadCallback(error)
+
+
+  load: (id, onLoadCallback)->
+    @onLoadCallback = onLoadCallback
+    @_id.set id
+    Meteor.apply 'starGetOne', [@getName(), id],{wait: false, onResultReceived:@_onResultLoadCallback}, @_loadCallback
+
+  serverLoad: (id)->
+    console.log "In serverLoad id: #{id}"
+    @setValues @constructor.collection().findOne(id)

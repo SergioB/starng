@@ -85,9 +85,20 @@ class @Text extends StarField
     @max = options.max
     if @max? then @addValidator Validators.maxString(@max)
     @height = options.height
+    @toCallOnChange = []
 
   editor: ->
     TextEditor
+
+  set: (newValue)->
+    super(newValue)
+    for callbackFunction in @toCallOnChange
+      callbackFunction(newValue)
+
+
+  # this adds callback function to be called when this element is updated with new value
+  modelChangeSubscribe: (newFunction)=>
+    @toCallOnChange.push newFunction
 
   # overriding the default editor
   renderEditor: (reactKey)->
@@ -101,6 +112,7 @@ class @Text extends StarField
       height: @height
       hasErrors: @hasErrors
       errorMessage: @errorMessage
+      modelChangeSubscribe: @modelChangeSubscribe
 
   onChange: (newValue)=>
     console.log "Text onChange newValue=#{newValue}"
