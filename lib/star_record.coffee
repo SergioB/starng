@@ -1,4 +1,5 @@
 # Note StarClasses should be defined in the same file as the StarRecord before its definition (possible will change in 1.3 with modules)
+# StarClasses is a container which contains a map wich maps class name to class object
 class @StarClasses
   @classes = {}
 
@@ -23,11 +24,6 @@ class @StarClasses
 
 
 class @StarRecord
-  isNew: true
-  #_id: is defined only on load and after insert otherwise it's undefined
-
-  hasError: false
-  errorMessage: ""
   @collection: ->
     Collections.get @getName()
 
@@ -39,6 +35,10 @@ class @StarRecord
 
   constructor: ->
     @processFields()
+    @isNew = true
+    #_id: is defined only on load and after insert otherwise it's undefined
+    @hasError =  false
+    @errorMessage = ""
 
   _id: StarField.field # definition of _id field common in all Meteor collections
     transient: true
@@ -96,6 +96,7 @@ class @StarRecord
       console.log "#{field.key}:#{field.value}"
 
   # WARNING! it will validate only the fields from form, entire object will remain unvalidated
+  # returns true if form has errors
   validateForm: (formName)->
     @validateFields @fieldsFor(formName)
 
@@ -105,7 +106,6 @@ class @StarRecord
   validateFields: (fieldsToValidate)->
     foundErrors = false
     for field in fieldsToValidate
-      validationResult =
       if field.runValidation()
         foundErrors = true
 
@@ -159,6 +159,7 @@ class @StarRecord
       console.log "in _afterInsert, newId = #{newId}"
       @_id.set newId
       @isNew = false
+      @hasError = false
     @_afterSave()
 
   # implementation of suppresseable callback, used for cases when afterSave hook need to wait for
@@ -166,6 +167,7 @@ class @StarRecord
   saveCallbackSuppressed: false
   invokeSaveCallback: ->
     if not @saveCallbackSuppressed and @saveCallback?
+      console.log 'invoking saveCallback'
       @saveCallback()
 
   saveCallback: ->

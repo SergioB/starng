@@ -2,6 +2,9 @@
 Meteor.methods
   starInsert: (name, values)->
     console.log "Inside starInsert name: #{name} values:#{values}"
+    if Object.keys(values).length == 0
+      console.log "No values received for object #{name}"
+      return 0
     classObject = StarClasses.get name
     console.log "classObject: #{classObject}"
     object = new classObject()
@@ -17,6 +20,9 @@ Meteor.methods
 
   starUpdate: (name, id, values)->
     console.log "Inside starUpdate name: #{name} id:#{id} values:#{values}"
+    if Object.keys(values).length == 0
+      console.log "No values received for object #{name} id:#{id}"
+      return 0
     object = StarClasses.new name
     object.setValues values
     console.log "after setValues"

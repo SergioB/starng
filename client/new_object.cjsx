@@ -15,12 +15,15 @@ class @NewObject extends React.Component
 
         fields
 
-    afterSave: (errors)=>
+    afterSave: =>
         console.log "in afterSave "
-        if errors
+        if @state.instance.hasError
             #todo: print error in form
-            console.log "in afterSave errors received"
+            console.log "in afterSave errors received #{@state.instance.errorMessage}"
+            @setState
+                hasErrors: true
         else
+            console.log 'no errors in afterSave'
             @props.onSave @state.instance
 
 
@@ -36,10 +39,29 @@ class @NewObject extends React.Component
         else
             @state.instance.save(@afterSave)
 
+    errorMessage: ->
+        if @state.instance.errorMessage == ""
+            console.log "empty errorMessage"
+            ""
+        else
+            console.log "non empty errorMessage"
+            <div className="alert alert-danger" role="alert">
+                <span className="glyphicon glyphicon-exclamation-sign" area-hidden="true"></span>
+                <span className="sr-only">Error:</span>
+                {"#{@state.instance.errorMessage}"}
+            </div>
+
     render: ->
-        console.log("In render of NewObject, name:#{this.props.type.name}")
+        console.log "In render of NewObject, name:#{this.props.type.name}"
         console.log("instance: ["+@state.instance+"]")
+        errorMessage = if @state.instance.errorMessage == ""
+            console.log "empty errorMessage"
+            ""
+        else
+            console.log "non empty errorMessage"
+            <span className="label danger-label">{"#{@state.instance.errorMessage}"}</span>
         <form role="form" onSubmit=@handleSubmit >
+            {@errorMessage()}
             {@renderFields()}
             <SubmitButton />
         </form>
