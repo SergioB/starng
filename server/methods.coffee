@@ -25,6 +25,7 @@ Meteor.methods
       return 0
     object = StarClasses.new name
     object.setValues values
+    object.isNew = false
     console.log "after setValues"
     object.onServerSave Meteor.userId()
     console.log "after onServerSave with userId: "+Meteor.userId()

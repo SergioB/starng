@@ -34,7 +34,9 @@ class @StarRecord
   @constructor: ->
 
   constructor: ->
+    console.log 'in star record constructor'
     @processFields()
+#    @processMethods()
     @isNew = true
     #_id: is defined only on load and after insert otherwise it's undefined
     @hasError =  false
@@ -42,6 +44,25 @@ class @StarRecord
 
   _id: StarField.field # definition of _id field common in all Meteor collections
     transient: true
+
+  # lazily execute function for some id without loading that id first
+  # can execute server side functions for certain ids without first loading the
+  # full object to client side
+#  @forId: (id)->
+#
+#    if not @lazyObject?
+#      @createLazyObject()
+#    @lazyObject.forId(id)
+#
+#  processMethods: ->
+#    console.log 'in processMethods'
+#    if @serverSide? # if this object has server side only functions
+#      for name, func of @serverSide
+#        if _.isFunction(func)
+#          console.log "the #{name} is function"
+#
+#        else
+#          console.log "ERROR: in serverSide the element with name #{name} is not a function"
 
   processFields: ->
     @fields = []
@@ -198,4 +219,5 @@ class @StarRecord
 
   serverLoad: (id)->
     console.log "In serverLoad id: #{id}"
+    @isNew = false
     @setValues @constructor.collection().findOne(id)

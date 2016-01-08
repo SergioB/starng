@@ -118,6 +118,11 @@ class @Text extends StarField
     console.log "Text onChange newValue=#{newValue}"
     @value = newValue
 
+# Named StarBoolean in order to avoid name clashes with React
+class @StarBoolean extends StarField
+  constructor: (options) ->
+    super(options)
+
 class @ManyToOne extends StarField
   to: (className) ->
     console.log("ManyToOne to:"+className)
