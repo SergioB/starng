@@ -24,8 +24,8 @@ Meteor.methods
       console.log "No values received for object #{name} id:#{id}"
       return 0
     object = StarClasses.new name
+    object.serverLoad id # todo: to handle errors
     object.setValues values
-    object.isNew = false
     console.log "after setValues"
     object.onServerSave Meteor.userId()
     console.log "after onServerSave with userId: "+Meteor.userId()
