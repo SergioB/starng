@@ -18,7 +18,7 @@ Meteor.methods
     console.log "after get collection: #{collection}"
     collection.insert object.computeValues()  # insert returns the unique _id
 
-  starUpdate: (name, id, values)->
+  starUpdate: (name, id, values, formName)->
     console.log "Inside starUpdate name: #{name} id:#{id} values:#{values}"
     if Object.keys(values).length == 0
       console.log "No values received for object #{name} id:#{id}"
@@ -27,12 +27,15 @@ Meteor.methods
     object.serverLoad id # todo: to handle errors
     object.setValues values
     console.log "after setValues"
-    object.onServerSave Meteor.userId()
-    console.log "after onServerSave with userId: "+Meteor.userId()
+    object.onServerSave @userId
+    console.log "after onServerSave with userId: #{@userId}"
     object.debugInfo()
     collection = Collections.get name
     console.log "after get collection: #{collection}"
     collection.update id, object.computeValues()  # returns the number of affected documents, in this case should be 1
+    if formName
+      if object.forms[formName]?.afterUpdateServer
+        object.forms[formName].afterUpdateServer(object, @userId)
 
   starGetOne: (name, id)->
     console.log "name: #{name} id:#{id}"

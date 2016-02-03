@@ -179,9 +179,9 @@ class @StarRecord
     else
       console.log "in _afterInsert, newId = #{newId}"
       @_id.set newId
-      @isNew = false
       @hasError = false
-    @_afterSave()
+      @_afterSave()   #todo: to handle error
+      @isNew = false
 
   # implementation of suppresseable callback, used for cases when afterSave hook need to wait for
   # other callbacks before invoking save callback, in this case it will suppress the callback and will invoke it later
@@ -193,13 +193,13 @@ class @StarRecord
 
   saveCallback: ->
 
-  save: (saveCallback)->
+  save: (saveCallback, formName)->
     @saveCallback = saveCallback
     @beforeSave()    # calling before save hook, which can be redefined later
     if @isNew
-      Meteor.call("starInsert", @getName(), @computeValues(), @_afterInsert)
+      Meteor.call("starInsert", @getName(), @computeValues(), formName, @_afterInsert)
     else
-      Meteor.call("starUpdate", @getName(), @_id.value, @computeValues(), @_afterUpdate)
+      Meteor.call("starUpdate", @getName(), @_id.value, @computeValues(), formName, @_afterUpdate)
 
   _loadCallback: (error, result)=>
     console.log "in loadCallback, error: #{error}, result: #{result}"

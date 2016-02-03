@@ -37,7 +37,7 @@ class @NewObject extends React.Component
             @setState
                 hasErrors: true
         else
-            @state.instance.save(@afterSave)
+            @state.instance.save(@afterSave, @props.form)
 
     errorMessage: ->
         if @state.instance.errorMessage == ""
