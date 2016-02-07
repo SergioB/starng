@@ -3,8 +3,7 @@ class @BooleanEditor extends React.Component
   constructor: (props)->
     super(props)
     value = @props.value ? ""
-    console.log "TextEditor created with value: #{value}"
-    @fieldType = "text" # it is overriden by PasswordEditor
+    console.log "BooleanEditor created with value: #{value}"
     @state =
       value: value
 
@@ -12,7 +11,7 @@ class @BooleanEditor extends React.Component
     @props.modelChangeSubscribe @updateValue
 
   updateValue: (newValue)=>
-    console.log "In TextEditor.updateValue #{@props.label} newValue: #{newValue}"
+    console.log "In BooleanEditor.updateValue #{@props.label} newValue: #{newValue}"
     @setState
       value: newValue
 
@@ -21,12 +20,6 @@ class @BooleanEditor extends React.Component
     @setState
       value: newValue
     @props.handleChange newValue
-
-  inputElement: ->
-    if @props.height && @props.height > 1
-      <textarea className="form-control" rows={@props.height} type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
-    else
-      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
 
   render: ->
     commonClass = "form-group"

@@ -139,20 +139,19 @@ class @StarBoolean extends StarField
 
   # overriding the default editor
   renderEditor: (reactKey)->
-    console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
+    console.log "Generating BooleanEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
     React.createElement @editor(),
       name: @key
       label: @getLabel()
       key: reactKey
       value: @value
       handleChange: @onChange
-      height: @height
       hasErrors: @hasErrors
       errorMessage: @errorMessage
       modelChangeSubscribe: @modelChangeSubscribe
 
   onChange: (newValue)=>
-    console.log "Text onChange newValue=#{newValue}"
+    console.log "StarBoolean onChange newValue=#{newValue}"
     @value = newValue
 
 class @ManyToOne extends StarField
