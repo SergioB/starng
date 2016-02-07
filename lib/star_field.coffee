@@ -122,6 +122,38 @@ class @Text extends StarField
 class @StarBoolean extends StarField
   constructor: (options) ->
     super(options)
+    @toCallOnChange = []
+
+  editor: ->
+    BooleanEditor
+
+  set: (newValue)->
+    super(newValue)
+    for callbackFunction in @toCallOnChange
+      callbackFunction(newValue)
+
+
+  # this adds callback function to be called when this element is updated with new value
+  modelChangeSubscribe: (newFunction)=>
+    @toCallOnChange.push newFunction
+
+  # overriding the default editor
+  renderEditor: (reactKey)->
+    console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
+    React.createElement @editor(),
+      name: @key
+      label: @getLabel()
+      key: reactKey
+      value: @value
+      handleChange: @onChange
+      height: @height
+      hasErrors: @hasErrors
+      errorMessage: @errorMessage
+      modelChangeSubscribe: @modelChangeSubscribe
+
+  onChange: (newValue)=>
+    console.log "Text onChange newValue=#{newValue}"
+    @value = newValue
 
 class @ManyToOne extends StarField
   to: (className) ->
