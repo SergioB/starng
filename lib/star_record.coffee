@@ -205,7 +205,7 @@ class @StarRecord
     console.log "in loadCallback, error: #{error}, result: #{result}"
 
   _onResultLoadCallback: (error, result)=>
-    console.log "in _onResultLoadCallback, error: #{error}, result: #{result} title:#{result.title}"
+    console.log "in _onResultLoadCallback, error: #{error}, result: #{result} title:#{result?.title}"
     @setValues result
     @isNew = false
     if @onLoadCallback?

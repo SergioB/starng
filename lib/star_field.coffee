@@ -51,7 +51,7 @@ class @StarField
 
   runValidation: ->
     @hasErrors = false
-    console.log "In run validation... value = #{@value}"
+    console.log "In run validation... name: #{@key} value = #{@value}"
     if not @optional and @isEmpty()
       @errorMessage = "#{@getLabel()} must not be empty"
       @hasErrors = true  # also returns true meaning that there are errors in this validation
@@ -123,12 +123,19 @@ class @StarBoolean extends StarField
   constructor: (options) ->
     super(options)
     @toCallOnChange = []
+    console.log "in StarBoolean constructor value:#{@value}"
+    if not @value # if value is not defined then set it as false
+      console.log "setting value to false"
+      @value = false
 
   editor: ->
     BooleanEditor
 
   set: (newValue)->
     super(newValue)
+    if not newValue # in case not defined or empty string setting it to boolean false
+      @value = false
+      newValue = false
     for callbackFunction in @toCallOnChange
       callbackFunction(newValue)
 
