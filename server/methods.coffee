@@ -33,6 +33,7 @@ Meteor.methods
     collection = Collections.get name
     console.log "after get collection: #{collection}"
     collection.update id, object.computeValues()  # returns the number of affected documents, in this case should be 1
+    console.log "formName: #{formName} object.forms[formName]?.afterUpdateServer: #{object.forms[formName]?.afterUpdateServer}"
     if formName
       if object.forms[formName]?.afterUpdateServer
         object.forms[formName].afterUpdateServer(object, @userId)
