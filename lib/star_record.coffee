@@ -221,3 +221,18 @@ class @StarRecord
     console.log "In serverLoad id: #{id}"
     @isNew = false
     @setValues @constructor.collection().findOne(id)
+
+  #  ** Static functions:
+
+  ###
+  # On server returns one object of this id, on client loads object and calls onLoad function when load is finished
+  ###
+  @getOne: (id, onLoad)->
+    if Meteor.isServer
+      object = StarClasses.new @getName() # creates a  new instance of name class
+      object.serverLoad id
+      object
+    else  # todo: to test client part
+      object = StarClasses.new @getName() # creates a  new instance of name class
+      object.load id, onLoad
+      object
