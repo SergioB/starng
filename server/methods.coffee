@@ -19,7 +19,7 @@ Meteor.methods
     collection.insert object.computeValues()  # insert returns the unique _id
 
   starUpdate: (name, id, values, formName)->
-    console.log "Inside starUpdate name: #{name} id:#{id} values:#{values}"
+    console.log "Inside starUpdate name: #{name} id:#{id} values:#{values} Meteor.userId:#{@userId}"
     if Object.keys(values).length == 0
       console.log "No values received for object #{name} id:#{id}"
       return 0
