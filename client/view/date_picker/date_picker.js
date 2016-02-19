@@ -20,9 +20,13 @@
             return DateUtilities.pad(date.getDate().toString());
         },
 
-        toMonthAndYearString: function(date) {
+        toMonthString: function(date) {
             var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            return months[date.getMonth()] + " " + date.getFullYear();
+            return months[date.getMonth()];
+        },
+
+        toYearString: function(date) {
+            return '' + date.getFullYear();
         },
 
         moveToDayOfWeek: function(date, dayOfWeek) {
@@ -105,10 +109,16 @@
 
             if (this.props.onSelect)
                 this.props.onSelect(day);
+            if (this.props.onChange) {
+                var eventObject = {};
+                eventObject.target = {};
+                eventObject.target.value = day;
+                this.props.onChange(eventObject);
+            }
         },
 
         show: function() {
-            var trigger = this.refs.trigger.getDOMNode(),
+            var trigger = this.refs.trigger,
                 rect = trigger.getBoundingClientRect(),
                 isTopHalf = rect.top > window.innerHeight/2,
                 calendarHeight = 203;
@@ -145,6 +155,7 @@
 
         onTransitionEnd: function() {
             this.refs.monthHeader.enable();
+            this.refs.yearHeader.enable();
         },
 
         show: function(position) {
@@ -164,9 +175,57 @@
 
         render: function() {
             return React.createElement("div", {ref: "calendar", className: "ardp-calendar-" + this.props.id + " calendar" + (this.state.visible ? " calendar-show" : " calendar-hide"), style: this.state.style },
+                React.createElement(YearHeader, {ref: "yearHeader", view: this.props.view, onMove: this.onMove}),
                 React.createElement(MonthHeader, {ref: "monthHeader", view: this.props.view, onMove: this.onMove}),
                 React.createElement(WeekHeader, null),
                 React.createElement(Weeks, {ref: "weeks", view: this.props.view, selected: this.props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: this.props.onSelect, minDate: this.props.minDate, maxDate: this.props.maxDate})
+            );
+        }
+    });
+
+    var YearHeader = React.createClass({displayName: "YearHeader",
+        getInitialState: function() {
+            return {
+                view: DateUtilities.clone(this.props.view),
+                enabled: true
+            };
+        },
+
+        moveBackward: function() {
+            var view = DateUtilities.clone(this.state.view);
+            view.setFullYear(view.getFullYear()-1);
+            this.move(view, false);
+        },
+
+        moveForward: function() {
+            console.log ("YEAR move forward clicked");
+            var view = DateUtilities.clone(this.state.view);
+            view.setFullYear(view.getFullYear()+1);
+            this.move(view, true);
+        },
+
+        move: function(view, isForward) {
+            if (!this.state.enabled)
+                return;
+
+            this.setState({
+                view: view,
+                enabled: false
+            });
+
+            this.props.onMove(view, isForward);
+        },
+
+        enable: function() {
+            this.setState({ enabled: true });
+        },
+
+        render: function() {
+            var enabled = this.state.enabled;
+            return React.createElement("div", {className: "month-header"},
+                React.createElement("i", {className: (enabled ? "" : " disabled"), onClick: this.moveBackward}, String.fromCharCode(9664)),
+                React.createElement("span", null, DateUtilities.toYearString(this.state.view)),
+                React.createElement("i", {className: (enabled ? "" : " disabled"), onClick: this.moveForward}, String.fromCharCode(9654))
             );
         }
     });
@@ -211,7 +270,7 @@
             var enabled = this.state.enabled;
             return React.createElement("div", {className: "month-header"},
                 React.createElement("i", {className: (enabled ? "" : " disabled"), onClick: this.moveBackward}, String.fromCharCode(9664)),
-                React.createElement("span", null, DateUtilities.toMonthAndYearString(this.state.view)),
+                React.createElement("span", null, DateUtilities.toMonthString(this.state.view)),
                 React.createElement("i", {className: (enabled ? "" : " disabled"), onClick: this.moveForward}, String.fromCharCode(9654))
             );
         }
@@ -241,7 +300,7 @@
         },
 
         componentDidMount: function() {
-            this.refs.current.getDOMNode().addEventListener("transitionend", this.onTransitionEnd);
+            this.refs.current.addEventListener("transitionend", this.onTransitionEnd);
         },
 
         onTransitionEnd: function() {
