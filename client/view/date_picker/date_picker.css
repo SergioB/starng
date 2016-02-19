@@ -1,182 +1,135 @@
-.dp-wrapper {
-    overflow: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0);
-    z-index: 1000;
-    transition: background .5s
+div.ardp-date-picker {
+    font-size:16px;
+    font-family:Arial;
+    box-sizing:border-box;
 }
-
-.dp-wrapper.dp-visible {
-    background: rgba(0, 0, 0, 0.25)
+div.ardp-date-picker * {
+    box-sizing:border-box;
 }
-
-.dp {
-    text-align: center;
+div.ardp-date-picker div.calendar {
     position: absolute;
-    border: 1px solid #EEE;
+    z-index: 10;
     background: white;
-    width: calc(100% - 4em);
-    max-width: 600px;
-    top: 50%;
-    left: 50%;
-    border-radius: .25em;
-    box-shadow: 0 0 5em rgba(0, 0, 0, 0.45);
-    transform: translate(-50%, 0);
-    transition: transform .5s
+    width: 260px;
+    padding: 5px;
+    color: #244152;
+    border-radius: 3px;
+    height: 203px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
-
-.dp-visible .dp {
-    transform: translate(-50%, -50%)
+div.ardp-date-picker div.calendar.calendar-show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 100ms linear;
 }
-
-.dp-header {
-    box-sizing: border-box;
-    position: relative;
-    padding: 1em 2em 1.5em
+div.ardp-date-picker div.calendar.calendar-hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 100ms, opacity 100ms linear;
 }
-
-.dp-month-year {
-    display: block;
-    font-size: 1.5em;
-    font-weight: 300
+div.ardp-date-picker div.calendar div.month-header {
+    float: left;
+    width: 100%;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    align-items: center;
 }
-
-.dp-month, .dp-year {
-    margin: 0 .15em
-}
-
-.dp-prev, .dp-next {
-    position: absolute;
-    top: 0;
-    border: 0;
-    background: transparent;
-    outline: 0;
-    padding: 2.5em 3.5em
-}
-
-.dp-prev:after, .dp-next:after {
-    content: '';
-    border: 2px solid #777;
-    width: 10px;
-    height: 10px;
-    display: inline-block;
-    transform: rotate(-45deg);
-    transition: border-color .2s
-}
-
-.dp-prev:focus:after, .dp-next:focus:after, .dp-prev:hover:after, .dp-next:hover:after {
-    border-color: black
-}
-
-.dp-prev:after {
-    border-right: 0;
-    border-bottom: 0
-}
-
-.dp-next:after {
-    border-left: 0;
-    border-top: 0
-}
-
-.dp-prev {
-    left: 0
-}
-
-.dp-next {
-    right: 0
-}
-
-.dp-body {
-    text-align: center
-}
-
-.dp-day-of-week, .dp-day {
-    box-sizing: border-box;
-    display: inline-block;
-    width: 14%;
-    text-align: center;
-    padding: .25em 0;
-    border: 0;
-    margin: 0;
-    line-height: 1;
-    background: transparent;
-    outline: 0;
-    text-decoration: none
-}
-
-.dp-day {
-    position: relative;
+div.ardp-date-picker div.calendar div.month-header > i {
+    font-weight: bold;
+    padding: 5px 8px;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 1.25em;
-    padding: .75rem 0
+    font-style:normal;
+    font-size:0.7em;
 }
-
-.dp-edge-day {
-    color: #d0d0d0
+div.ardp-date-picker div.calendar div.month-header > i:hover {
+    background-color: #026aa7;
+    color: white;
 }
-
-.dp-today:hover, .dp-close:hover, .dp-clear:hover, .dp-today:focus, .dp-close:focus, .dp-clear:focus, .dp-day:hover {
-    background: #72bbff;
-    color: white
+div.ardp-date-picker div.calendar div.week-header {
+    float: left;
+    width: 100%;
+    margin-top: 8px;
+    display: table;
+    padding-bottom: 3px;
+    border-bottom: solid 1px #CCC;
+    margin-bottom: 3px;
 }
-
-.dp-today:active, .dp-close:active, .dp-clear:active, .dp-selected {
-    background: #3497ff;
-    color: white
-}
-
-.dp-day-of-week {
+div.ardp-date-picker div.calendar div.week-header > span {
+    float: left;
+    width: 14.285714285714286%;
+    font-size: 0.6em;
     text-transform: uppercase;
-    font-size: .8em;
-    opacity: .5
+    color: #026aa7;
+    font-weight: bold;
+    text-align: center;
 }
-
-.dp-today, .dp-close, .dp-clear {
-    display: inline-block;
-    box-sizing: border-box;
-    padding: 1em;
-    border: 0;
-    font-size: 1em;
-    width: 33%;
-    background: transparent;
-    outline: 0
+div.ardp-date-picker div.calendar div.weeks {
+    float: left;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 140px;
 }
-
-.dp-day-today:after {
-    content: '';
-    height: 0;
-    width: 0;
-    border: 7px solid #227bd7;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
+div.ardp-date-picker div.calendar div.weeks > div {
     position: absolute;
-    top: 0;
-    right: 0
+    width: 250px;
 }
-
-@media (max-width: 480px),(max-height: 480px) {
-    .dp {
-        font-size: .8em;
-        width: auto;
-        top: 25%;
-        left: 50%;
-        width: calc(100% - 20px);
-        border-radius: .25em;
-        overflow: hidden;
-        box-shadow: 0 0 5em rgba(0, 0, 0, 0.45);
-        transform: translate(-50%, 0);
-        transition: transform .5s
-    }
-
-    .dp-day-of-week, .dp-day {
-        padding: .5em
-    }
-
-    .dp-visible .dp {
-        transform: translate(-50%, -25%)
-    }
+div.ardp-date-picker div.calendar div.weeks > div.current {
+    left: 0;
+}
+div.ardp-date-picker div.calendar div.weeks > div.other {
+    left: 250px;
+}
+div.ardp-date-picker div.calendar div.weeks > div.other.right {
+    left: -250px;
+}
+div.ardp-date-picker div.calendar div.weeks > div.sliding {
+    transition: transform 250ms ease;
+    -webkit-transition: -webkit-transform 250ms ease;
+}
+div.ardp-date-picker div.calendar div.weeks > div.sliding.left {
+    transform: translate3d(-250px, 0, 0);
+    -webkit-transform: translate3d(-250px, 0, 0);
+}
+div.ardp-date-picker div.calendar div.weeks > div.sliding.right {
+    transform: translate3d(250px, 0, 0);
+    -webkit-transform: translate3d(250px, 0, 0);
+}
+div.ardp-date-picker div.calendar div.weeks div.week {
+    float: left;
+    width: 100%;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day {
+    float: left;
+    width: 14.285714285714286%;
+    font-size: 0.8em;
+    padding: 4px 0;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 3px;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day:hover {
+    background: #EAEAEA;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day.other-month {
+    color: #AAA;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day.disabled {
+    color: #E0E0E0;
+    cursor: default;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day.disabled:hover {
+    background: transparent !important;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day.today {
+    background: #68b53e;
+    color: white;
+}
+div.ardp-date-picker div.calendar div.weeks div.week div.day.selected {
+    background: #026aa7;
+    color: white;
 }

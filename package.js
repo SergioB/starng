@@ -34,8 +34,7 @@ Package.onUse(function(api) {
   api.addFiles('client/view/elements.cjsx', 'client');
 
   api.addFiles('client/view/date_picker/date_picker.css', 'client');
-  api.addFiles('client/view/date_picker/tiny_date_picker.js', 'client');
-  api.addFiles('client/view/date_picker/react_datepicker.cjsx', 'client');
+  api.addFiles('client/view/date_picker/date_picker.js', 'client');
   api.addFiles('client/view/date_editor.cjsx', 'client');
 
   api.addFiles('client/new_object.cjsx', 'client');
