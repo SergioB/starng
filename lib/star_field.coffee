@@ -161,6 +161,46 @@ class @StarBoolean extends StarField
     console.log "StarBoolean onChange newValue=#{newValue}"
     @value = newValue
 
+# Named StarDate in order to avoid name clashes with js Data
+class @StarDate extends StarField
+  constructor: (options) ->
+    super(options)
+    @toCallOnChange = []
+    console.log "in StarDate constructor value:#{@value}"
+    if not @value # if value is not defined then set it as false
+      console.log "setting value to new Date"
+      @value = new Date()
+
+  editor: ->
+    DateEditor
+
+  set: (newValue)->
+    super(newValue)
+    for callbackFunction in @toCallOnChange
+      callbackFunction(newValue)
+
+
+# this adds callback function to be called when this element is updated with new value
+  modelChangeSubscribe: (newFunction)=>
+    @toCallOnChange.push newFunction
+
+# overriding the default editor
+  renderEditor: (reactKey)->
+    console.log "Generating BooleanEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
+    React.createElement @editor(),
+      name: @key
+      label: @getLabel()
+      key: reactKey
+      value: @value
+      handleChange: @onChange
+      hasErrors: @hasErrors
+      errorMessage: @errorMessage
+      modelChangeSubscribe: @modelChangeSubscribe
+
+  onChange: (newValue)=>
+    console.log "StarDate onChange newValue=#{newValue}"
+    @value = newValue
+
 class @ManyToOne extends StarField
   to: (className) ->
     console.log("ManyToOne to:"+className)

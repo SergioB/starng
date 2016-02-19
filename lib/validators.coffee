@@ -43,3 +43,9 @@ class @Validators
             $ ///i           # end of line and ignore case
     @createValidator "Invalid e-mail address", (value)->
       not value.match emailPattern
+
+  @minimumAge: (age)->
+    ageYearsAgo = new Date()
+    ageYearsAgo.setFullYear(ageYearsAgo.getFullYear() - age)
+    @createValidator "Your age must be bigger than #{age}", (value)->
+      value > ageYearsAgo

@@ -18,6 +18,7 @@ Package.onUse(function(api) {
   api.use('coffeescript');
   api.use('react');
   api.use('ccorcos:cjsx');
+  api.use('momentjs:moment@2.8.4');
   api.addFiles('lib/collections.coffee');
   api.addFiles('lib/star_field.coffee');
   api.addFiles('lib/star_record.coffee');
@@ -30,6 +31,12 @@ Package.onUse(function(api) {
   api.addFiles('client/view/password.cjsx', 'client');
   api.addFiles('client/view/label.cjsx', 'client');
   api.addFiles('client/view/elements.cjsx', 'client');
+
+  api.addFiles('client/view/date_picker/date_picker.css', 'client');
+  api.addFiles('client/view/date_picker/tiny_date_picker.js', 'client');
+  api.addFiles('client/view/date_picker/react_datepicker.cjsx', 'client');
+  api.addFiles('client/view/date_editor.cjsx', 'client');
+
   api.addFiles('client/new_object.cjsx', 'client');
   api.addFiles('client/edit_object.cjsx', 'client');
   api.addFiles('server/methods.coffee', 'server');
