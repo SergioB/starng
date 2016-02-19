@@ -48,4 +48,4 @@ class @Validators
     ageYearsAgo = new Date()
     ageYearsAgo.setFullYear(ageYearsAgo.getFullYear() - age)
     @createValidator "Your age must be bigger than #{age}", (value)->
-      value > ageYearsAgo
+      value.getTime() > ageYearsAgo.getTime()
