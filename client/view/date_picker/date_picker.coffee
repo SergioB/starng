@@ -50,6 +50,10 @@ DateUtilities =
         maxDate: null
         id: @getUniqueIdentifier()
 
+    getDefaultProps: ->
+        pastYears: 100
+        futureYears: 20
+
     componentDidMount: ->
         document.addEventListener("click", this.hideOnDocumentClick)
 
@@ -138,6 +142,8 @@ DateUtilities =
                 onChange: @onChange
                 minDate: @state.minDate
                 maxDate: @state.maxDate
+                pastYears: @props.pastYears
+                futureYears: @props.futureYears
 
 Calendar = React.createClass
     displayName: "Calendar"
@@ -176,7 +182,7 @@ Calendar = React.createClass
     render: ->
         calendarVisible = if @state.visible then " calendar-show" else " calendar-hide"
         React.createElement "div", {ref: "calendar", className: "ardp-calendar-" + @props.id + " calendar" + calendarVisible, style: @state.style },
-            React.createElement(YearHeader, {ref: "yearHeader", view: @props.selected, onMove: @onMove}),
+            React.createElement(YearHeader, {ref: "yearHeader", view: @props.selected, onMove: @onMove, pastYears: @props.pastYears, futureYears: @props.futureYears}),
             React.createElement(MonthHeader, {ref: "monthHeader", view: @props.selected, onMove: @onMove}),
             React.createElement(WeekHeader, null),
             React.createElement(Weeks, {ref: "weeks", view: @props.view, selected: @props.selected, onTransitionEnd: this.onTransitionEnd, onSelect: @props.onSelect, minDate: @props.minDate, maxDate: @props.maxDate})
@@ -209,7 +215,7 @@ YearHeader = React.createClass
         today = new Date()
         todayYear = today.getFullYear()
         # currently it is used for birthday, so years are smaller than today, will be modified later
-        [0 .. 110].map (i)->
+        [-@props.futureYears .. @props.pastYears].map (i)->
             year = todayYear - i
             option {value: year, key: year},
                 year

@@ -8,6 +8,6 @@ class @EditObject extends NewObject
         console.log "in onLoad error:#{error}"
         if error
             console.log " error: #{error}"
-            # todo: handle error
+            # todo: handle errors
         @setState
             hasErrors: false
