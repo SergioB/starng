@@ -161,6 +161,44 @@ class @StarBoolean extends StarField
     console.log "StarBoolean onChange newValue=#{newValue}"
     @value = newValue
 
+class @Select extends StarField
+  constructor: (options) ->
+    super(options)
+    @toCallOnChange = []
+    console.log "in Select constructor value:#{@value}"
+    @options = options.options # adding the select options
+
+  editor: ->
+    SelectEditor
+
+  set: (newValue)->
+    super(newValue)
+    for callbackFunction in @toCallOnChange
+      callbackFunction(newValue)
+
+
+# this adds callback function to be called when this element is updated with new value
+  modelChangeSubscribe: (newFunction)=>
+    @toCallOnChange.push newFunction
+
+# overriding the default editor
+  renderEditor: (reactKey)->
+    console.log "Generating SelectEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
+    React.createElement @editor(),
+      name: @key
+      label: @getLabel()
+      key: reactKey
+      value: @value
+      options: @options
+      handleChange: @onChange
+      hasErrors: @hasErrors
+      errorMessage: @errorMessage
+      modelChangeSubscribe: @modelChangeSubscribe
+
+  onChange: (newValue)=>
+    console.log "StarBoolean onChange newValue=#{newValue}"
+    @value = newValue
+
 # Named StarDate in order to avoid name clashes with js Data
 class @StarDate extends StarField
   constructor: (options) ->
