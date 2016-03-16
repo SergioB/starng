@@ -40,7 +40,7 @@ class @TextEditor extends React.Component
     else ""
 
     <div className= {commonClass}>
-      <label className="control-label" htmlFor={@props.name} >{@props.label}:</label>
+      <label className="control-label" htmlFor={@props.name} >{@props.label}</label>
       {@inputElement()}
       {errorMessage}
     </div>

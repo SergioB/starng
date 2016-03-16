@@ -94,7 +94,10 @@ class @StarRecord
         console.log "For #{formName} Returning fields: #{@fields}"
         return @fields
 
-    (@getField fieldName for fieldName in @forms[formName].fields)
+    @getFields @forms[formName].fields
+
+  getFields: (fieldNames)->
+    (@getField fieldName for fieldName in fieldNames)
 
   getField: (fieldName)->
     if this[fieldName]? then this[fieldName] else throw "In #{@getName()} there is no field with name: #{fieldName}"
@@ -120,6 +123,9 @@ class @StarRecord
   # returns true if form has errors
   validateForm: (formName)->
     @validateFields @fieldsFor(formName)
+
+  validateCustomFields: (fieldNames)->
+    @validateFields( @getFields(fieldNames))
 
   validate: ->
     @validateFields @fields

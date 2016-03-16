@@ -29,7 +29,7 @@ class @DateEditor extends React.Component
     else ""
 
     <div className= {commonClass}>
-      <label className="control-label" htmlFor={@props.name} >{@props.label}:</label>
+      <label className="control-label" htmlFor={@props.name} >{@props.label}</label>
       <DatePicker onChange=@handleChange value={@state.value} pastYears={110} futureYears={0}/>
       {errorMessage}
     </div>
