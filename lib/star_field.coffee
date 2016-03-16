@@ -169,8 +169,11 @@ class @Select extends StarField
   constructor: (options) ->
     super(options)
     @toCallOnChange = []
-    console.log "in Select constructor value:#{@value}"
     @options = options.options # adding the select options
+    if not @value or @value==''
+      @value = @options[0]
+    console.log "in Select constructor value:#{@value}"
+
 
   editor: ->
     SelectEditor
