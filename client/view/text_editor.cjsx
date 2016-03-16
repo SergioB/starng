@@ -5,8 +5,9 @@ class @TextEditor extends React.Component
     value = @props.value ? ""
     console.log "TextEditor created with value: #{value}"
     @fieldType = "text" # it is overriden by PasswordEditor
-    @state =
-      value: value
+    if props.value
+      @state =
+        value: value
 
     # now subscribe this component to model change value
     @props.modelChangeSubscribe @updateValue
@@ -23,10 +24,13 @@ class @TextEditor extends React.Component
     @props.handleChange newValue
 
   inputElement: ->
+    value = @state?.value
     if @props.height && @props.height > 1
-      <textarea className="form-control" rows={@props.height} type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+      <textarea className="form-control" rows={@props.height} type={@fieldType} name={@props.name} id={@props.name}
+        onChange=@handleChange value={value} placeholder={@props.placeholder}/>
     else
-      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name} onChange=@handleChange value={@state.value}/>
+      <input className="form-control" type={@fieldType} name={@props.name} id={@props.name}
+        onChange=@handleChange value={value} placeholder={@props.placeholder}/>
 
   render: ->
     commonClass = "form-group"

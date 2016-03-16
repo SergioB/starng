@@ -6,6 +6,7 @@ class @StarField
   constructor: (options) ->
     @key = options.key
     @label = options.label
+    @placeholder = options.placeholder
     @value = options.initialValue ? ""
     @hasErrors = false   # true if has validation errors
     @errorMessage = ""   # validation error message
@@ -101,11 +102,12 @@ class @Text extends StarField
     @toCallOnChange.push newFunction
 
   # overriding the default editor
-  renderEditor: (reactKey)->
+  renderEditor: (reactKey, customData)->
     console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
     React.createElement @editor(),
       name: @key
-      label: @getLabel()
+      label: customData?.label ? @getLabel()
+      placeholder: customData?.placeholder ? @placeholder
       key: reactKey
       value: @value
       handleChange: @onChange
@@ -145,11 +147,13 @@ class @StarBoolean extends StarField
     @toCallOnChange.push newFunction
 
   # overriding the default editor
-  renderEditor: (reactKey)->
+  renderEditor: (reactKey, customData)->
+
     console.log "Generating BooleanEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
     React.createElement @editor(),
       name: @key
-      label: @getLabel()
+      label: customData?.label ? @getLabel()
+      placeholder: customData?.placeholder
       key: reactKey
       value: @value
       handleChange: @onChange
