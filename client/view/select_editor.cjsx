@@ -33,11 +33,9 @@ class @SelectEditor extends React.Component
     else ""
 
     <div className= {commonClass} checkbox>
-      <label className="control-label">
         <label className="control-label" htmlFor={@props.name} >{@props.label}</label>
         <select className="form-control" value="" onChange=@handleChange value={@state.value} >
             {@showOptions()}
         </select>
-      </label>
       {errorMessage}
     </div>
