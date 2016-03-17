@@ -260,7 +260,7 @@ class @Password extends Text
     PasswordEditor
 
 
-class @Email extends Text
+class @StarEmail extends Text
   constructor: (options) ->
     super(options)
     @addValidator Validators.email()
