@@ -102,8 +102,9 @@ DateUtilities =
     onChange: (view)->
         console.log "DatePicker onChange view: #{view}"
         @setState
-            selected: DateUtilities.clone view
+            #selected: DateUtilities.clone view
             view: DateUtilities.clone view
+        @onSelect DateUtilities.clone view
 
     show: ->
         trigger = this.refs.trigger
