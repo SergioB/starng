@@ -87,8 +87,12 @@ DateUtilities =
         @setState { maxDate: date }
 
     onSelect: (day)->
+        @hide()
+        @selectDate(day)
+
+    selectDate: (day)->
         this.setState { selected: day }
-        this.hide()
+        console.log "### selectDate clicked: clicked on onSelect #{day}"
 
         if this.props.onSelect
             this.props.onSelect(day)
@@ -99,12 +103,13 @@ DateUtilities =
             eventObject.target.value = day
             @props.onChange(eventObject)
 
+
     onChange: (view)->
         console.log "DatePicker onChange view: #{view}"
         @setState
             #selected: DateUtilities.clone view
             view: DateUtilities.clone view
-        @onSelect DateUtilities.clone view
+        @selectDate DateUtilities.clone view
 
     show: ->
         trigger = this.refs.trigger
@@ -122,6 +127,7 @@ DateUtilities =
             @state.selected
 
     hide: ->
+        console.log "In hide..."
         @refs.calendar.hide()
 
     render: ->
