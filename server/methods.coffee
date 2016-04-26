@@ -11,12 +11,15 @@ Meteor.methods
     console.log "object: #{object}"
     object.setValues values
     console.log "after setValues"
-    object.onServerSave Meteor.userId()
-    console.log "after onServerSave with userId: "+Meteor.userId()
-    object.debugInfo()
-    collection = Collections.get name
-    console.log "after get collection: #{collection}"
-    collection.insert object.computeValues()  # insert returns the unique _id
+    if object.canBeSaved(@userId)
+      object.onServerSave @userId
+      console.log "after onServerSave with userId: "+@userId
+      object.debugInfo()
+      collection = Collections.get name
+      console.log "after get collection: #{collection}"
+      collection.insert object.computeValues()  # insert returns the unique _id
+    else
+      throw new Meteor.Error 'authorization_error', "The object #{name} can't be inserted"
 
   starUpdate: (name, id, values, formName)->
     console.log "Inside starUpdate name: #{name} id:#{id} values:#{values} Meteor.userId:#{@userId}"
@@ -27,16 +30,19 @@ Meteor.methods
     object.serverLoad id # todo: to handle errors
     object.setValues values
     console.log "after setValues"
-    object.onServerSave @userId
-    console.log "after onServerSave with userId: #{@userId}"
-    object.debugInfo()
-    collection = Collections.get name
-    console.log "after get collection: #{collection}"
-    collection.update id, object.computeValues()  # returns the number of affected documents, in this case should be 1
-    console.log "formName: #{formName} object.forms[formName]?.afterUpdateServer: #{object.forms[formName]?.afterUpdateServer}"
-    if formName
-      if object.forms[formName]?.afterUpdateServer
-        object.forms[formName].afterUpdateServer(object, @userId)
+    if object.canBeSaved(@userId)
+      object.onServerSave @userId
+      console.log "after onServerSave with userId: #{@userId}"
+      object.debugInfo()
+      collection = Collections.get name
+      console.log "after get collection: #{collection}"
+      collection.update id, object.computeValues()  # returns the number of affected documents, in this case should be 1
+      console.log "formName: #{formName} object.forms[formName]?.afterUpdateServer: #{object.forms[formName]?.afterUpdateServer}"
+      if formName
+        if object.forms[formName]?.afterUpdateServer
+          object.forms[formName].afterUpdateServer(object, @userId)
+    else
+      throw new Meteor.Error 'authorization_error', "The object #{name} can't be updated"
 
   starGetOne: (name, id)->
     console.log "name: #{name} id:#{id}"

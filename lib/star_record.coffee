@@ -228,6 +228,10 @@ class @StarRecord
     @isNew = false
     @setValues @constructor.collection().findOne(id)
 
+  # verifies that currently logged user can save the object
+  canBeSaved: (loggedUserId)->
+    true
+
   #  ** Static functions:
 
   ###
