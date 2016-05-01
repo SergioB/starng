@@ -103,10 +103,11 @@ class @Text extends StarField
 
   # overriding the default editor
   renderEditor: (reactKey, customData)->
-    console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage}"
+    label = customData?.label ? @getLabel()
+    console.log "Generating TextEditor hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage} label: #{label}"
     React.createElement @editor(),
       name: @key
-      label: customData?.label ? @getLabel()
+      label: label
       placeholder: customData?.placeholder ? @placeholder
       key: reactKey
       value: @value
@@ -203,7 +204,48 @@ class @Select extends StarField
       modelChangeSubscribe: @modelChangeSubscribe
 
   onChange: (newValue)=>
-    console.log "StarBoolean onChange newValue=#{newValue}"
+    console.log "Select onChange newValue=#{newValue}"
+    @value = newValue
+
+class @Autocomplete extends StarField
+  constructor: (options) ->
+    super(options)
+    @toCallOnChange = []
+    @options = options.options # adding the select options
+    if not @value or @value==''
+      @value = @options[0]
+    console.log "in Select constructor value:#{@value}"
+
+
+  editor: ->
+    AutocompleteEditor
+
+  set: (newValue)->
+    super(newValue)
+    for callbackFunction in @toCallOnChange
+      callbackFunction(newValue)
+
+
+  # this adds callback function to be called when this element is updated with new value
+  modelChangeSubscribe: (newFunction)=>
+    @toCallOnChange.push newFunction
+
+  # overriding the default editor
+  renderEditor: (reactKey)->
+    console.log "Generating Autocomplete hasErrors: #{@hasErrors} value:#{@value} errorMessage: #{@errorMessage} label: #{@getLabel()}"
+    React.createElement @editor(),
+      name: @key
+      label: @getLabel()
+      key: reactKey
+      value: @value
+      options: @options
+      handleChange: @onChange
+      hasErrors: @hasErrors
+      errorMessage: @errorMessage
+      modelChangeSubscribe: @modelChangeSubscribe
+
+  onChange: (newValue)=>
+    console.log "Autocomplete onChange newValue=#{newValue}"
     @value = newValue
 
 # Named StarDate in order to avoid name clashes with js Data
