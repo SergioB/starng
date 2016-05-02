@@ -1,15 +1,9 @@
-div = React.createFactory 'div'
-input = React.createFactory 'input'
-br = React.createFactory 'br'
-button = React.createFactory 'button'
 
 ButtonComponent = React.createClass
   onClick: -> @props.handleClick(@props.name)
   render:  ->
     classes = "btn btn-xs btn-default"
-    button {className: classes, onClick: @onClick}, @props.name
-
-Button = React.createFactory ButtonComponent
+    <button className={classes} onClick={@onClick}>{@props.name}</button>
 
 @Typeahead = React.createClass
   getInitialState : -> {input: ""}
@@ -19,10 +13,14 @@ Button = React.createFactory ButtonComponent
     regex = new RegExp(input, "i")
     _.select @props.options, (variant)-> variant.match(regex) && variant != input && input != ''
 
+  renderButtons: ->
+    _.map @matches(@state.input), (variant)=>
+      <ButtonComponent handleClick={@handleClick} name={variant} key={variant} />
+
   render: ->
-    div {},
-      input {ref:'field', onChange: @handleChange, value: @state.input}
-      br {}
-      _.map @matches(@state.input), (variant)=>
-        Button {handleClick: @handleClick, name: variant, key: variant}
+    <div>
+      <input ref='field' onChange={@handleChange} value={@state.input} />
+      <br />
+      {@renderButtons()}
+    </div>
 
