@@ -33,7 +33,7 @@ class @AutocompleteEditor extends React.Component
     else ""
 
     <div className= {commonClass} checkbox>
-        <label className="control-label" htmlFor={@props.name} >{@props.label}</label>
-        <Typeahead options=@props.options />
+      <label className="control-label" htmlFor={@props.name} >{@props.label}</label>
+      <Typeahead options=@props.options />
       {errorMessage}
     </div>

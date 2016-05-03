@@ -28,7 +28,7 @@ Package.onUse(function(api) {
   api.addFiles('client/create.html', 'client');
   api.addFiles('client/create.coffee', 'client');
   api.addFiles('client/view/autocomplete_editor.cjsx', 'client');
-  api.addFiles('client/view/autocomplete/autocomplete.cjsx', 'client');
+  api.addFiles('client/view/autocomplete/autocomplete.jsx', 'client');
   api.addFiles('client/view/text_editor.cjsx', 'client');
   api.addFiles('client/view/boolean_editor.cjsx', 'client');
   api.addFiles('client/view/select_editor.cjsx', 'client');

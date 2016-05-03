@@ -1,21 +1,43 @@
+# This cjsx file is not used, the autocmplete.jsx is used instead, please read the comment there.
+class ButtonComponent extends React.Component
+  onClick: (e)=>
+    e.preventDefault()
+    @props.handleClick(@props.name)
 
-ButtonComponent = React.createClass
-  onClick: -> @props.handleClick(@props.name)
-  render:  ->
+  render: ->
     classes = "btn btn-xs btn-default"
     <button className={classes} onClick={@onClick}>{@props.name}</button>
 
-@Typeahead = React.createClass
-  getInitialState : -> {input: ""}
-  handleChange    : -> @setState input: @refs.field.value
-  handleClick     : (variant)-> @setState input: variant
-  matches         : (input)->
+class @Typeahead1 extends React.Component
+  constructor: (props) ->
+    super props
+    @state =
+      input: ''
+
+  handleChange: =>
+    @setState
+      input: @refs.field.value
+
+  handleClick: (variant)=>
+    @setState input: variant
+
+  matches: (input)->
     regex = new RegExp(input, "i")
     _.select @props.options, (variant)-> variant.match(regex) && variant != input && input != ''
 
   renderButtons: ->
-    _.map @matches(@state.input), (variant)=>
-      <ButtonComponent handleClick={@handleClick} name={variant} key={variant} />
+    #@matches(@state.input).map (variant)=>
+    #  <ButtonComponent handleClick={@handleClick} name={variant} key={variant} />
+
+    [
+      <ButtonComponent handleClick={@handleClick} name='aaa' key='aaa' />
+      <ButtonComponent handleClick={@handleClick} name='bbb' key='bbb' />
+    ]
+    #[
+    #  'aaa bbb'
+    #  'ccc ddd'
+    #  'eee'
+    #]
 
   render: ->
     <div>
